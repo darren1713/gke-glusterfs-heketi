@@ -16,5 +16,5 @@
 # ---------------- [START] Open required GlusterFS Node Ports ---------------- #
 gcloud compute firewall-rules create allow-glusterfs \
   --allow tcp:2222,tcp:24007,tcp:24008,tcp:49152-49251 \
-  --source-ranges="0.0.0.0/0"
+  --source-ranges="10.0.0.0/8"
 # ----------------- [END] Open required GlusterFS Node Ports ----------------- #

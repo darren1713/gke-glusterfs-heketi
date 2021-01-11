@@ -2,38 +2,41 @@
 
 # ------------------------ [START] required variables ------------------------ #
 # EXAMPLES:
-# CLOUDSDK_PROJECT_NAME='steven-aldinger'
-# CLOUDSDK_CLUSTER_NAME='development'
-# CLOUDSDK_COMPUTE_ZONE='us-east1-c'
-
-CLOUDSDK_PROJECT_NAME='grinsides-llc-gcp'
+CLOUDSDK_PROJECT_NAME='my-gluster-project'
 CLOUDSDK_CLUSTER_NAME='development'
-CLOUDSDK_COMPUTE_ZONE='us-east1-c'
+CLOUDSDK_COMPUTE_REGION='us-east1'
 # ------------------------- [END] required variables ------------------------- #
 
 # ------------------------ [START] optional variables ------------------------ #
 # will default to GKE's default at the time the script is run
-CLUSTER_VERSION=''
+CLUSTER_VERSION='1.16.15-gke.4901'
 
 # must be greater than or equal to 3
 # defaults to '3'
 NODE_COUNT='3'
 
 # defaults to 'n1-standard-1'
-MACHINE_TYPE='n1-standard-1'
+MACHINE_TYPE='e2-small'
 
 # NOTE: For building and pushing images, the script will use the defaults explained below.
-#       For running the kubernetes job, the script will default to 'tymlezgkek8s/gke-glusterfs-heketi:latest'
 # defaults to "gcr.io/$CLOUDSDK_PROJECT_NAME"
 DOCKER_REGISTRY=''
 
 # defaults to 20
 DISK_SIZE='20'
+DISK_TYPE='pd-ssd'
 
 # used if you want to build your own image
 # defaults to 'glusterfs-heketi-bootstrap'
 DOCKER_IMAGE_NAME='glusterfs-heketi-bootstrap'
 
 # defaults to '0.0.1'
-DOCKER_IMAGE_VERSION=''
+DOCKER_IMAGE_VERSION='0.0.1'
+
+# latest versions of heketi require an admin key or user key for authentication
+HEKETI_KEYADMIN='adminkey'
+HEKETI_KEYUSER='userkey'
+
+GLUSTER_KUBERNETES_REPO='https://github.com/darren1713/gluster-kubernetes.git'
+
 # ------------------------- [END] optional variables ------------------------- #

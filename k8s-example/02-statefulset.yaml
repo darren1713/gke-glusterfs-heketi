@@ -1,5 +1,5 @@
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mariadb
@@ -9,12 +9,15 @@ metadata:
 spec:
   serviceName: mariadb
   replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
   template:
     metadata:
       name: mariadb
       namespace: default
       labels:
-        component: mariadb
+        app: mariadb
     spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 10

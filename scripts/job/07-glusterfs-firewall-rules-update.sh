@@ -31,5 +31,5 @@ echo "Creating firewall rule..."
 
 gcloud compute firewall-rules update allow-glusterfs \
   --allow "tcp:$heketi_nodeport" \
-  --source-ranges="0.0.0.0/0"
+  --source-ranges="10.0.0.0/8"
 # ------------- [END] Update firewall rule with Heketi node port ------------- #

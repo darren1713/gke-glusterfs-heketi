@@ -38,4 +38,4 @@ echo " ============== [END] Generating Heketi node port service ============== "
 echo ""
 # ------------------ [END] Generate Heketi node port service ----------------- #
 
-kubectl replace -f "$heketi_service_yaml_path" --force
+kubectl replace -f "$heketi_service_yaml_path" --force --validate=false

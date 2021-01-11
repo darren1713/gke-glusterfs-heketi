@@ -3,7 +3,7 @@ FROM alpine:3.6
 ENV \
  CLOUDSDK_PYTHON_SITEPACKAGES="1" \
  # https://cloud.google.com/sdk/docs/release-notes
- CLOUD_SDK_VERSION="174.0.0" \
+ CLOUD_SDK_VERSION="321.0.0" \
  GLUSTER_HEKETI_BOOTSTRAP_DIR="/gluster-heketi-bootstrap"
 
 # makes commands available:
@@ -29,7 +29,7 @@ RUN apk add --no-cache \
  && gcloud config set component_manager/disable_update_check true \
  && gcloud components install kubectl \
  && mkdir -p "$GLUSTER_HEKETI_BOOTSTRAP_DIR/gluster-kubernetes" \
- && git clone https://github.com/gluster/gluster-kubernetes.git "$GLUSTER_HEKETI_BOOTSTRAP_DIR/gluster-kubernetes"
+ && git clone https://github.com/darren1713/gluster-kubernetes.git "$GLUSTER_HEKETI_BOOTSTRAP_DIR/gluster-kubernetes"
 
 COPY . $GLUSTER_HEKETI_BOOTSTRAP_DIR/
 

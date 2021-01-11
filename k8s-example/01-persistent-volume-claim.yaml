@@ -4,10 +4,12 @@ metadata:
   name: mariadb
   namespace: default
   labels:
-    app: example-glusterfs-heketi
+    app: mariadb
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "glusterfs-storage"
 spec:
   accessModes:
-    - "ReadWriteOnce"
+    - "ReadWriteMany"
   resources:
     requests:
       storage: "1Gi"

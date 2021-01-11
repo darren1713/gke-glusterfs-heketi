@@ -18,19 +18,28 @@ echo ""
 echo " ========== [START] Enable kernel modules and install glusterfs client ========== "
 echo ""
 
-for node in $(kubectl get nodes -o name)
+IFS=$'\n'
+
+#Get list of nodes and zones as we have to create the disk in the correct zone for the correct node
+for CLUSTERZONES in $(kubectl get nodes -o custom-columns=NAME:.metadata.name,ZONE:.metadata.labels."failure-domain\.beta\.kubernetes\.io/zone" --no-headers)
 do
-  node=$(basename $node)
+  # Parse (name,zone) --> $NODE, $ZONE
+  IFS=$' ' read -r NODE ZONE <<<"${CLUSTERZONES}"
+  echo -e "Node:  ${NODE}"
+  echo -e "Zone:  ${ZONE}"
+  echo ""
 
   echo ""
-  echo " ======================== [START] Configuring $node ======================== "
+  echo " ======================== [START] Configuring $NODE ======================== "
   echo ""
 
-  gcloud compute ssh "$node" \
+  gcloud compute ssh "$NODE" \
     --zone "$ZONE" \
     --command "\
       sudo sh -c '\
-        add-apt-repository -y ppa:gluster/glusterfs-3.12 && \
+        apt-get update && \
+        apt-get -y install software-properties-common && \
+        add-apt-repository -y ppa:gluster/glusterfs-7 && \
         apt-get update && \
         apt-get -y install glusterfs-client;
         apt-mark hold glusterfs*; \
@@ -44,18 +53,11 @@ do
         systemctl disable rpcbind.service; \
     '"
 
-  # gcloud compute ssh "$node" --zone "$ZONE" --command "sudo sh -c 'echo \"dm_snapshot\" >> /etc/modules && modprobe dm_snapshot'"
-  #
-  # gcloud compute ssh "$node" --zone "$ZONE" --command "sudo sh -c 'echo \"dm_mirror\" >> /etc/modules && modprobe dm_mirror'"
-  #
-  # gcloud compute ssh "$node" --zone "$ZONE" --command "sudo sh -c 'echo \"dm_thin_pool\" >> /etc/modules && modprobe dm_thin_pool'"
-  #
-  # gcloud compute ssh "$node" --zone "$ZONE" --command 'sudo systemctl stop rpcbind.service; sudo systemctl disable rpcbind.service'
-
   echo ""
-  echo " ========================= [END] Configuring $node ========================= "
+  echo " ========================= [END] Configuring $NODE ========================= "
   echo ""
 done
+unset IFS
 
 echo ""
 echo " ========== [START] Enable kernel modules and install glusterfs client ========== "

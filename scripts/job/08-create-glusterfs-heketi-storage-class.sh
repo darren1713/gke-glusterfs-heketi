@@ -19,5 +19,5 @@ EOF
 # ----------------- [END] Generate storage class descriptor ------------------ #
 
 # ----------------------- [START] Apply storage class ------------------------ #
-kubectl apply -f "$storage_class_yaml_path"
+kubectl apply -f "$storage_class_yaml_path" --validate=false
 # ------------------------ [END] Apply storage class ------------------------- #
