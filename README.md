@@ -1,11 +1,8 @@
 # Hyper-converged GlusterFS and Heketi Dynamic Volume Provisioning on Google Container Engine (GKE)
 
-<div>
-  <a class="donate-with-crypto"
-     href="https://commerce.coinbase.com/checkout/3acb85e4-7334-4002-b9e5-38a85bc4548e">
-    <span>Donate with Crypto for More Blogs and Tutorials</span>
-  </a>
-</div>
+Original project is DEAD.
+
+The updates provide current working scripts tested on Kubernetes 1.17, and also replace the scaling out with multi zone support, as it was originally creating all resources in a single zone.
 
 ## Usage
 
