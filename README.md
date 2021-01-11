@@ -4,6 +4,10 @@ Original project is DEAD.
 
 The updates provide current working scripts tested on Kubernetes 1.17, and also replace the scaling out with multi zone support, as it was originally creating all resources in a single zone.
 
+## Open Items To Fix
+
+The script 'scripts/job/02-set-kernel-modules.sh' needs to be converted to DaemonSet instead of running commands directly on the kubernetes nodes. This will not survive upgrades, reconfiguring, or new nodes.
+
 ## Usage
 
 1. Edit [config](config) to match your GKE project/zone
