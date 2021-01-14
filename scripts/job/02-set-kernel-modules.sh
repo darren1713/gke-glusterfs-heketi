@@ -39,7 +39,7 @@ do
       sudo sh -c '\
         apt-get update && \
         apt-get -y install software-properties-common && \
-        add-apt-repository -y ppa:gluster/glusterfs-7 && \
+        add-apt-repository -y ppa:gluster/glusterfs-5 && \
         apt-get update && \
         apt-get -y install glusterfs-client;
         apt-mark hold glusterfs*; \

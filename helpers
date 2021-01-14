@@ -42,7 +42,7 @@ export heketi_keyuser="$HEKETI_KEYUSER"
 # ---------------------- [START] set optional variables ---------------------- #
 # cluster version will default to whatever GKE's default is at the time
 export cluster_version="$CLUSTER_VERSION"
-export node_count=${NODE_COUNT:-'3'}
+export node_count=${NODE_COUNT:-'1'}
 export machine_type=${MACHINE_TYPE:-'n1-standard-1'}
 export disk_size=${DISK_SIZE:-'20'}
 export disk_type=${DISK_TYPE:-'pd-ssd'}
@@ -311,7 +311,9 @@ EOF
 }
 
 gke_glusterfs_heketi_delete_gluster_disks () {
-
+  #FIXME This doesn't work now because the cluster and nodes are delted first,
+  # and then we can't lookup the disks via the node names. Need to dump a list of
+  # disks and check the namme
   IFS=$'\n'
 
   #Get list of nodes and zones as we have to create the disk in the correct zone for the correct node
@@ -421,7 +423,8 @@ gke_glusterfs_heketi_delete_cluster () {
 gke_glusterfs_heketi_delete_cluster_and_disks () {
   gke_glusterfs_heketi_delete_cluster && \
   gke_glusterfs_heketi_delete_gluster_disks && \
-  gcloud compute firewall-rules delete allow-glusterfs
+  gcloud compute firewall-rules delete allow-$cluster_name-glusterfs
+  gcloud compute firewall-rules delete allow-$cluster_name-heketi
 }
 
 gke_glusterfs_heketi_tail_job_logs () {

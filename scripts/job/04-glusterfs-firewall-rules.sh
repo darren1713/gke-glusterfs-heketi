@@ -14,7 +14,7 @@
 # 49152 to 49251 - Each brick for every volume on the host requires its own port. For every new brick, one new port will be used starting at 49152. We recommend a default range of 49152-49251 on each host, though you can adjust this to fit your needs.
 
 # ---------------- [START] Open required GlusterFS Node Ports ---------------- #
-gcloud compute firewall-rules create allow-glusterfs \
+gcloud compute firewall-rules create allow-$CLUSTER_NAME-glusterfs \
   --allow tcp:2222,tcp:24007,tcp:24008,tcp:49152-49251 \
   --source-ranges="10.0.0.0/8"
 # ----------------- [END] Open required GlusterFS Node Ports ----------------- #

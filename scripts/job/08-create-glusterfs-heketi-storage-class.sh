@@ -8,13 +8,19 @@ storage_class_yaml_path="$GLUSTER_HEKETI_BOOTSTRAP_DIR/heketi-glusterfs-storage-
 # ---------------- [START] Generate storage class descriptor ----------------- #
 cat > "$storage_class_yaml_path" <<EOF
 ---
-apiVersion: storage.k8s.io/v1beta1
+apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: glusterfs-storage
 provisioner: kubernetes.io/glusterfs
 parameters:
   resturl: "http://${external_ip_first_node}:${heketi_nodeport}"
+  restuser: "admin"
+  restuserkey: "$HEKETI_KEYADMIN"
+  restauthenabled: "true"
+provisioner: kubernetes.io/glusterfs
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
 EOF
 # ----------------- [END] Generate storage class descriptor ------------------ #
 

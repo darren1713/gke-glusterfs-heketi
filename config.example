@@ -11,9 +11,9 @@ CLOUDSDK_COMPUTE_REGION='us-east1'
 # will default to GKE's default at the time the script is run
 CLUSTER_VERSION='1.16.15-gke.4901'
 
-# must be greater than or equal to 3
-# defaults to '3'
-NODE_COUNT='3'
+# must be greater than or equal to 3 total, which is NODE_COUNT * the number of
+# zones in a region
+NODE_COUNT='1'
 
 # defaults to 'n1-standard-1'
 MACHINE_TYPE='e2-small'
