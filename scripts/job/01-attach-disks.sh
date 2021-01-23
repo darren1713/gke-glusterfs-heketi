@@ -68,7 +68,7 @@ unset IFS
 echo ""
 echo "Deploy the daemonset to the nodes to attach disks and install gluster"
 echo ""
-sed -e "s/\$CLUSTER_NAME/gsattrack-gluster5-13/" $gke_glusterfs_heketi_job_scripts_dir/01-entrypoint.yaml > $gke_glusterfs_heketi_job_scripts_dir/01-entrypoint-deploy.yaml
+sed -e "s/\$CLUSTER_NAME/${CLUSTER_NAME}/" $gke_glusterfs_heketi_job_scripts_dir/01-entrypoint.yaml > $gke_glusterfs_heketi_job_scripts_dir/01-entrypoint-deploy.yaml
 kubectl apply -f $gke_glusterfs_heketi_job_scripts_dir/01-entrypoint-deploy.yaml --namespace=default
 kubectl apply -f $gke_glusterfs_heketi_job_scripts_dir/01-daemonset-deploy.yaml --namespace=default
 
