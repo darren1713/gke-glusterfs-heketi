@@ -50,30 +50,31 @@ gcloud container clusters get-credentials "$cluster_name" --region "$region" --p
 
 
 
+# This is now handled by the DaemonSet deployed in script 01-attach-disks
 # --------------------- [START] Add packages -------------------- #
-IFS=$'\n'
+#IFS=$'\n'
 
 #Get list of nodes and zones as we have to create the disk in the correct zone for the correct node
-for CLUSTERZONES in $(kubectl get nodes -o custom-columns=NAME:.metadata.name,ZONE:.metadata.labels."failure-domain\.beta\.kubernetes\.io/zone" --no-headers)
-do
-  # Parse (name,zone) --> $NODE, $ZONE
-  IFS=$' ' read -r NODE ZONE <<<"${CLUSTERZONES}"
-  echo -e "Node:  ${NODE}"
-  echo -e "Zone:  ${ZONE}"
-  echo ""
-
-  echo ""
-  echo " ======================== [START] Configuring $NODE software-properties-common ======================== "
-  echo ""
-
-  gcloud compute ssh "$NODE" \
-    --zone "$ZONE" \
-    --command "\
-      sudo sh -c '\
-        apt-get update && apt-get install software-properties-common -y \
-        '"
-  echo ""
-  echo " ========================= [END] Configuring $NODE ========================= "
-  echo ""
-done
+#for CLUSTERZONES in $(kubectl get nodes -o custom-columns=NAME:.metadata.name,ZONE:.metadata.labels."failure-domain\.beta\.kubernetes\.io/zone" --no-headers)
+#do
+#  # Parse (name,zone) --> $NODE, $ZONE
+#  IFS=$' ' read -r NODE ZONE <<<"${CLUSTERZONES}"
+#  echo -e "Node:  ${NODE}"
+#  echo -e "Zone:  ${ZONE}"
+#  echo ""
+#
+#  echo ""
+#  echo " ======================== [START] Configuring $NODE software-properties-common ======================== "
+#  echo ""
+#
+#  gcloud compute ssh "$NODE" \
+#    --zone "$ZONE" \
+#    --command "\
+#      sudo sh -c '\
+#        apt-get update && apt-get install software-properties-common -y \
+#        '"
+#  echo ""
+#  echo " ========================= [END] Configuring $NODE ========================= "
+#  echo ""
+#done
 # ---------------------- [END] Add packages --------------------- #
