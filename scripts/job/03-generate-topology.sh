@@ -37,9 +37,7 @@ cat >> "$topology_path" <<EOF
             "zone": 1
           },
           "devices": [
-            "/dev/sdb",
-            "/dev/sdc",
-            "/dev/sdd"
+            "/dev/sdb"
           ]
         },
 EOF

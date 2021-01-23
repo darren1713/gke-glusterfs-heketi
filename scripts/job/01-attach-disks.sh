@@ -33,29 +33,28 @@ do
     --description "${CLUSTER_NAME}-gfs-k8s-brick" \
     --type "$DISK_TYPE"
 
-  gcloud compute instances attach-disk $NODE --disk "${CLUSTER_NAME}-${ZONE}-disk-$n" --zone "$ZONE"
 
-  n=$(( $n + 1 ))
+  #gcloud compute instances attach-disk $NODE --disk "${CLUSTER_NAME}-${ZONE}-disk-$n" --zone "$ZONE"
 
-  gcloud compute --project "$PROJECT_ID" disks create "${CLUSTER_NAME}-${ZONE}-disk-$n" \
-    --size "$DISK_SIZE" \
-    --zone "$ZONE" \
-    --description "${CLUSTER_NAME}-gfs-k8s-brick" \
-    --type "$DISK_TYPE"
+  #n=$(( $n + 1 ))
 
-  gcloud compute instances attach-disk "$NODE" --disk "${CLUSTER_NAME}-${ZONE}-disk-$n" --zone "$ZONE"
+  #gcloud compute --project "$PROJECT_ID" disks create "${CLUSTER_NAME}-${ZONE}-disk-$n" \
+  #  --size "$DISK_SIZE" \
+  #  --zone "$ZONE" \
+  #  --description "${CLUSTER_NAME}-gfs-k8s-brick" \
+  #  --type "$DISK_TYPE"
 
-  n=$(( $n + 1 ))
+  #gcloud compute instances attach-disk "$NODE" --disk "${CLUSTER_NAME}-${ZONE}-disk-$n" --zone "$ZONE"
 
-  gcloud compute --project "$PROJECT_ID" disks create "${CLUSTER_NAME}-${ZONE}-disk-$n" \
-    --size "$DISK_SIZE" \
-    --zone "$ZONE" \
-    --description "${CLUSTER_NAME}-gfs-k8s-brick" \
-    --type "$DISK_TYPE"
+  #n=$(( $n + 1 ))
 
-  gcloud compute instances attach-disk "$NODE" --disk "${CLUSTER_NAME}-${ZONE}-disk-$n" --zone "$ZONE"
+  #gcloud compute --project "$PROJECT_ID" disks create "${CLUSTER_NAME}-${ZONE}-disk-$n" \
+  #  --size "$DISK_SIZE" \
+  #  --zone "$ZONE" \
+  #  --description "${CLUSTER_NAME}-gfs-k8s-brick" \
+  #  --type "$DISK_TYPE"
 
-  n=$(( $n + 1 ))
+  #gcloud compute instances attach-disk "$NODE" --disk "${CLUSTER_NAME}-${ZONE}-disk-$n" --zone "$ZONE"
 
   echo ""
   echo " ================== [END] Create and attach disks for node $NODE ================== "
@@ -63,5 +62,33 @@ do
 
 done
 unset IFS
+
+echo ""
+echo "Deploy the daemonset to the nodes to attach disks and install gluster"
+echo ""
+sed -e "s/\$CLUSTER_NAME/gsattrack-gluster5-13/" 01-entrypoint.yaml > 01-entrypoint-deploy.yaml
+kubectl apply -f 01-entrypoint-deploy.yaml
+kubectl apply -f 01-daemonset-deploy.yaml
+
+
+function wait-for-daemonset(){
+    retries=90
+    while [[ $retries -ge 0 ]];do
+        ready=$(kubectl -n $1 get daemonset $2 -o jsonpath="{.status.numberReady}")
+        required=$(kubectl -n $1 get daemonset $2 -o jsonpath="{.status.desiredNumberScheduled}")
+        echo "This is slow... Ready $ready Required $required"
+        if [[ $ready -eq $required ]];then
+            #echo "Succeeded"
+            break
+        fi
+        ((retries--))
+        sleep 10
+    done
+}
+
+echo ""
+echo "This takes a LONG TIME, wait up to 15 minutes for the daemonset to apply"
+echo ""
+wait-for-daemonset default node-initializer
 
 # ------------------ [END] Create disks and attach to nodes ------------------ #

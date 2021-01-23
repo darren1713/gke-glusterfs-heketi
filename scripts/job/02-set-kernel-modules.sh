@@ -33,25 +33,26 @@ do
   echo " ======================== [START] Configuring $NODE ======================== "
   echo ""
 
-  gcloud compute ssh "$NODE" \
-    --zone "$ZONE" \
-    --command "\
-      sudo sh -c '\
-        apt-get update && \
-        apt-get -y install software-properties-common && \
-        add-apt-repository -y ppa:gluster/glusterfs-5 && \
-        apt-get update && \
-        apt-get -y install glusterfs-client;
-        apt-mark hold glusterfs*; \
-        echo \"dm_snapshot\" >> /etc/modules && \
-        modprobe dm_snapshot; \
-        echo \"dm_mirror\" >> /etc/modules && \
-        modprobe dm_mirror; \
-        echo \"dm_thin_pool\" >> /etc/modules && \
-        modprobe dm_thin_pool; \
-        systemctl stop rpcbind.service; \
-        systemctl disable rpcbind.service; \
-    '"
+  # This is now handled in the daemonset script in the 01-attach-disks script
+  #gcloud compute ssh "$NODE" \
+  #  --zone "$ZONE" \
+  #  --command "\
+  #    sudo sh -c '\
+  #      apt-get update && \
+  #      apt-get -y install software-properties-common && \
+  #      add-apt-repository -y ppa:gluster/glusterfs-5 && \
+  #      apt-get update && \
+  #      apt-get -y install glusterfs-client;
+  #      apt-mark hold glusterfs*; \
+  #      echo \"dm_snapshot\" >> /etc/modules && \
+  #      modprobe dm_snapshot; \
+  #      echo \"dm_mirror\" >> /etc/modules && \
+  #      modprobe dm_mirror; \
+  #      echo \"dm_thin_pool\" >> /etc/modules && \
+  #      modprobe dm_thin_pool; \
+  #      systemctl stop rpcbind.service; \
+  #      systemctl disable rpcbind.service; \
+  #  '"
 
   echo ""
   echo " ========================= [END] Configuring $NODE ========================= "
