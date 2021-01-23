@@ -30,7 +30,7 @@ gcloud container --project "$project_name" clusters create "$cluster_name" $clus
     --disk-size '20' \
     --scopes bigquery,storage-full,userinfo-email,compute-rw,cloud-source-repos,https://www.googleapis.com/auth/cloud-platform,datastore,service-control,service-management,sql,sql-admin,https://www.googleapis.com/auth/appengine.admin,https://www.googleapis.com/auth/drive,https://www.googleapis.com/auth/calendar,https://www.googleapis.com/auth/plus.login,https://www.googleapis.com/auth/ndev.clouddns.readwrite \
     --num-nodes "$node_count" \
-    --network 'default' 
+    --network 'default' \
     --node-labels=storagenode=glusterfs
 #    --zone "$zone" \
 #    --enable-private-nodes \
