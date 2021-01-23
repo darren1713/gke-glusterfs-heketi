@@ -317,25 +317,18 @@ gke_glusterfs_heketi_delete_gluster_disks () {
   IFS=$'\n'
 
   #Get list of nodes and zones as we have to create the disk in the correct zone for the correct node
-  for CLUSTERZONES in $(kubectl get nodes -o custom-columns=NAME:.metadata.name,ZONE:.metadata.labels."failure-domain\.beta\.kubernetes\.io/zone" --no-headers)
+  for CLUSTERZONES in $(gcloud compute zones list --format="table[no-heading](name)" --filter="region=$region")
   do
-    # Parse (name,zone) --> $NODE, $ZONE
-    IFS=$' ' read -r NODE ZONE <<<"${CLUSTERZONES}"
-    echo -e "Node:  ${NODE}"
+    # Parse (zone) --> $ZONE
+    IFS=$' ' read -r ZONE <<<"${CLUSTERZONES}"
     echo -e "Zone:  ${ZONE}"
     echo ""
-    disk_list=""
 
-    echo "Deleting..."
-    for disk in $(gcloud compute disks list --format="table[no-heading](name)" --filter="description=${cluster_name}-gfs-k8s-brick --zone $ZONE")
-    do
-      disk_list="$disk_list $disk"
-    done
+    #If there's more disks created, update this to delete additional disks.
+    gcloud compute disks delete --zone $ZONE ${cluster_name}-${ZONE}-disk-1
 
-    gcloud compute disks delete --zone $ZONE $disk_list
   done
   unset IFS
-
 }
 
 gke_glusterfs_heketi_deploy_glusterfs_heketi () {
