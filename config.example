@@ -39,4 +39,5 @@ HEKETI_KEYUSER='userkey'
 
 GLUSTER_KUBERNETES_REPO='https://github.com/darren1713/gluster-kubernetes.git'
 
+GLUSTER_IMAGE_NAME="gcr.io/$CLUSTER_NAME/gluster-centos:0.0.2"
 # ------------------------- [END] optional variables ------------------------- #

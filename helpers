@@ -37,6 +37,7 @@ export zone="$CLOUDSDK_COMPUTE_ZONE"
 export region="$CLOUDSDK_COMPUTE_REGION"
 export heketi_keyadmin="$HEKETI_KEYADMIN"
 export heketi_keyuser="$HEKETI_KEYUSER"
+export gluster_image_name=${GLUSTER_IMAGE_NAME:-'gluster/gluster-centos:latest'}
 # ----------------------- [END] set required variables ----------------------- #
 
 # ---------------------- [START] set optional variables ---------------------- #
@@ -164,6 +165,7 @@ data:
   disk-type: "$disk_type"
   heketi-keyadmin: $heketi_keyadmin
   heketi-keyuser: $heketi_keyuser
+  gluster-image-name: $gluster_image_name
 EOF
 
 cat > "$project_dir/k8s/01-heketi-clusterrole.yaml" <<EOF
@@ -277,6 +279,11 @@ spec:
             configMapKeyRef:
               name: glusterfs-heketi-bootstrap
               key: cluster-name
+        - name: GLUSTER_IMAGE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: glusterfs-heketi-bootstrap
+              key: gluster_image_name
         - name: REGION
           valueFrom:
             configMapKeyRef:
@@ -480,6 +487,7 @@ echo "- MACHINE_TYPE          = $machine_type"
 echo "- DOCKER_REGISTRY       = $docker_registry"
 echo "- DOCKER_IMAGE_NAME     = $docker_image_name"
 echo "- DOCKER_IMAGE_VERSION  = $docker_image_version"
+echo "- GLUSTER_IMAGE_NAME    = $gluster_image_name"
 echo "---------------------------------------------"
 # ---------------------------- [END] print config ---------------------------- #
 
