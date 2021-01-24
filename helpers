@@ -283,7 +283,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: glusterfs-heketi-bootstrap
-              key: gluster_image_name
+              key: gluster-image-name
         - name: REGION
           valueFrom:
             configMapKeyRef:
