@@ -119,12 +119,12 @@ gke_glusterfs_heketi_build_image () {
   then
     echo "You need docker installed to build this image."
   else
-    docker build --no-cache -t "$docker_registry/$docker_image_name:$docker_image_version" "$project_dir"
+    docker build --no-cache --format=docker -t "$docker_registry/$docker_image_name:$docker_image_version" "$project_dir"
   fi
 }
 
 gke_glusterfs_heketi_push_image () {
-  docker push "$docker_registry/$docker_image_name:$docker_image_version"
+  docker push --format=v2s2 "$docker_registry/$docker_image_name:$docker_image_version"
 }
 
 gke_glusterfs_heketi_generate_k8s () {
