@@ -25,8 +25,8 @@ RUN apk add --no-cache \
  && curl -Lo /tmp/google-cloud-sdk.tar.gz "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-$CLOUD_SDK_VERSION-linux-x86_64.tar.gz" \
  && tar xzfv /tmp/google-cloud-sdk.tar.gz -C /usr/bin/ \
  && rm /tmp/google-cloud-sdk.tar.gz \
- && gcloud config set core/disable_usage_reporting true \
- && gcloud config set component_manager/disable_update_check true \
+ && gcloud config set --quiet core/disable_usage_reporting true \
+ && gcloud config set --quiet component_manager/disable_update_check true \
  && gcloud components install kubectl \
  && mkdir -p "$GLUSTER_HEKETI_BOOTSTRAP_DIR/gluster-kubernetes" \
  && git clone https://github.com/darren1713/gluster-kubernetes.git "$GLUSTER_HEKETI_BOOTSTRAP_DIR/gluster-kubernetes"
