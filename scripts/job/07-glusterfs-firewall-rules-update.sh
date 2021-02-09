@@ -2,8 +2,11 @@
 
 heketi_nodeport=$(kubectl get svc/heketi -n default -o jsonpath='{.spec.ports[0].nodePort}')
 
+echo "Setting gcloud project to $PROJECT_ID"
+gcloud config set project ${PROJECT_ID}
+
 echo "Looking up GCP firewall rule for gke-[cluster name]-xxxx-ssh rule to file source ip's for GCP control plane servers, which will ultimately connect to heketi when a new storage class is created"
-gcp_controlplane_ips=$(gcloud compute firewall-rules list --filter="allowed[].map().firewall_rule().list()=('tcp:22') AND name:('gke-$CLUSTER_NAME*')" --sort-by priority --format="table[no-heading]( sourceRanges.list() )")
+gcp_controlplane_ips=$(gcloud compute firewall-rules list --filter="allowed[].map().firewall_rule().list()=('tcp:22') AND name:('gke-${CLUSTER_NAME}*')" --sort-by priority --format="table[no-heading]( sourceRanges.list() )")
 
 echo "Google Control Plane IP's: $gcp_controlplane_ips"
 
